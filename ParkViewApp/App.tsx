@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DetailsScreen from './src/DetailsScreen';
-import HomeScreen from './src/HomeScreen';
+import HomeScreen from './src/HomeScreen/HomeScreen';
 
 const Stack = createNativeStackNavigator();
 
