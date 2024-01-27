@@ -37,7 +37,8 @@ def check_parking_status(frame, processed_frame, parking_spaces):
     cv2.putText(frame, f'Available Space: {space_counter}/{len(parking_spaces)}', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 200, 0), 3)
 
 def main():
-    video_source = 'ml-model/carpark-paper/IMG_7788.mp4'
+    # Replace this URL with the one provided by your IP Webcam app
+    video_source = 'ml-model/carpark-paper/IMG_7788.mp4'  
     cap = cv2.VideoCapture(video_source)
     parking_spaces = load_parking_spaces()
 

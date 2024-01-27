@@ -13,7 +13,7 @@ class ParkingSpaceApp:
         self.canvas = tk.Canvas(master, width=800, height=600)
         self.canvas.pack()
 
-        self.load_button = tk.Button(master, text="Load Image", command=self.load_image)
+        self.load_button = tk.Button(master, text="Load Video", command=self.load_video_frame)
         self.load_button.pack()
 
         self.save_button = tk.Button(master, text="Save Spaces", command=self.save_parking_spaces)
@@ -46,8 +46,8 @@ class ParkingSpaceApp:
         # Initialize variables
         self.parking_spaces = []
         self.current_image = None
-        self.box_width = 107
-        self.box_height = 48
+        self.box_width = 80
+        self.box_height = 40
         self.history = []
         self.redo_stack = []
         self.tk_image = None
@@ -60,11 +60,16 @@ class ParkingSpaceApp:
         except ValueError:
             print("Invalid width or height. Please enter numeric values.")
 
-    def load_image(self):
-        file_path = filedialog.askopenfilename()
+    def load_video_frame(self):
+        file_path = filedialog.askopenfilename(filetypes=[("MP4 video", "*.mp4"), ("All files", "*.*")])
         if file_path:
-            self.current_image = cv2.imread(file_path)
-            self.display_image()
+            cap = cv2.VideoCapture(file_path)
+            success, self.current_image = cap.read()
+            cap.release()
+            if success:
+                self.display_image()
+            else:
+                print("Failed to capture video frame.")
 
     def display_image(self):
         if self.current_image is not None:
