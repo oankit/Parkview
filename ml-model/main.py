@@ -28,14 +28,14 @@ class ParkingSpaceApp:
 
         self.entry_width = Entry(master)
         self.entry_width.pack()
-        self.entry_width.insert(0, "107")  # Default width
+        self.entry_width.insert(0, "80")  # Default width
 
         self.label_height = Label(master, text="Height:")
         self.label_height.pack()
 
         self.entry_height = Entry(master)
         self.entry_height.pack()
-        self.entry_height.insert(0, "48")  # Default height
+        self.entry_height.insert(0, "40")  # Default height
 
         self.set_size_button = tk.Button(master, text="Set Box Size", command=self.set_box_size)
         self.set_size_button.pack()
