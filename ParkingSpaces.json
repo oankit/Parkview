@@ -1,90 +1,66 @@
 [
     {
         "position": [
-            372,
-            436
+            405,
+            142
         ],
-        "width": 80,
-        "height": 40
+        "width": 350,
+        "height": 100
     },
     {
         "position": [
-            373,
-            356
+            406,
+            243
         ],
-        "width": 80,
-        "height": 40
+        "width": 350,
+        "height": 100
     },
     {
         "position": [
-            372,
-            317
+            404,
+            342
         ],
-        "width": 80,
-        "height": 40
+        "width": 350,
+        "height": 100
     },
     {
         "position": [
-            373,
-            275
+            398,
+            41
         ],
-        "width": 80,
-        "height": 40
+        "width": 350,
+        "height": 100
     },
     {
         "position": [
-            372,
-            235
+            48,
+            41
         ],
-        "width": 80,
-        "height": 40
+        "width": 350,
+        "height": 100
     },
     {
         "position": [
-            372,
-            197
+            49,
+            138
         ],
-        "width": 80,
-        "height": 40
+        "width": 350,
+        "height": 100
     },
     {
         "position": [
-            370,
-            157
+            50,
+            236
         ],
-        "width": 80,
-        "height": 40
+        "width": 350,
+        "height": 100
     },
     {
         "position": [
-            371,
-            118
+            56,
+            336
         ],
-        "width": 80,
-        "height": 40
-    },
-    {
-        "position": [
-            372,
-            81
-        ],
-        "width": 80,
-        "height": 40
-    },
-    {
-        "position": [
-            373,
-            477
-        ],
-        "width": 80,
-        "height": 40
-    },
-    {
-        "position": [
-            376,
-            515
-        ],
-        "width": 80,
-        "height": 40
+        "width": 350,
+        "height": 100
     }
 ]
