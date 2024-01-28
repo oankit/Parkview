@@ -1,6 +1,10 @@
 import cv2
 import numpy as np
 import json
+import urllib
+import urllib.request as urllib
+import tkinter as tk
+from tkinter import simpledialog
 
 def load_parking_spaces(filename='ParkingSpaces.json'):
     try:
@@ -36,18 +40,52 @@ def check_parking_status(frame, processed_frame, parking_spaces):
 
     cv2.putText(frame, f'Available Space: {space_counter}/{len(parking_spaces)}', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 200, 0), 3)
 
+def read_ip_camera(url):
+    try:
+        with urllib.urlopen(url) as imgResp:
+            imgNp = np.array(bytearray(imgResp.read()), dtype=np.uint8)
+            frame = cv2.imdecode(imgNp, -1)
+            return frame
+    except Exception as e:
+        print("Error reading from IP Camera:", e)
+        return None
+    
+def get_user_choice():
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    user_choice = simpledialog.askstring("Input", "Enter 1 for Local Video or 2 for IP Camera:", parent=root)
+    root.destroy()
+    return user_choice
+
 def main():
-    # Replace this URL with the one provided by your IP Webcam app
-    video_source = 'ml-model/carpark-paper/IMG_7788.mp4'  
-    cap = cv2.VideoCapture(video_source)
+    ip_camera_url = 'http://142.231.30.74:8080/shot.jpg'
     parking_spaces = load_parking_spaces()
 
+    # Get user choice through GUI
+    choice = get_user_choice()
+    cap = None  # Initialize video capture for local source
+    use_ip_camera = choice == '2'
+    
+    if use_ip_camera:
+            test_frame = read_ip_camera(ip_camera_url)
+            if test_frame is None:
+                print("Error: Unable to access the live IP camera source.")
+                return 
+    
     while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
+        frame = None
+        if use_ip_camera:
+            frame = read_ip_camera(ip_camera_url)
 
-        frame = resize_frame(frame)  # Resize the frame to match the GUI dimensions
+        if not use_ip_camera or frame is None:  # If IP camera is not available or local source is chosen
+            if cap is None:  # Initialize if not already done
+                cap = cv2.VideoCapture('ml-model/carpark-paper/IMG_7788.mp4')
+            ret, frame = cap.read()
+            if not ret:
+                print("Error reading from local video source.")
+                break
+
+        frame = resize_frame(frame)
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         blur_frame = cv2.GaussianBlur(gray_frame, (3, 3), 1)
         imgThreshold = cv2.adaptiveThreshold(blur_frame, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 25, 16)
@@ -61,7 +99,8 @@ def main():
         if cv2.waitKey(1) & 0xFF == 27:  # ESC key to exit
             break
 
-    cap.release()
+    if cap:
+        cap.release()
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":

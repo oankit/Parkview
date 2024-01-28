@@ -1,66 +1,66 @@
 [
     {
         "position": [
-            396,
-            53
+            418,
+            166
         ],
         "width": 300,
-        "height": 90
+        "height": 80
     },
     {
         "position": [
-            404,
-            144
+            55,
+            275
         ],
         "width": 300,
-        "height": 90
+        "height": 80
     },
     {
         "position": [
-            406,
-            248
+            60,
+            378
         ],
         "width": 300,
-        "height": 90
+        "height": 80
     },
     {
         "position": [
-            406,
-            348
+            71,
+            149
         ],
         "width": 300,
-        "height": 90
+        "height": 80
     },
     {
         "position": [
-            63,
-            32
+            423,
+            471
         ],
         "width": 300,
-        "height": 90
+        "height": 80
     },
     {
         "position": [
-            78,
-            148
+            418,
+            373
         ],
         "width": 300,
-        "height": 90
+        "height": 80
     },
     {
         "position": [
-            88,
-            244
+            62,
+            477
         ],
         "width": 300,
-        "height": 90
+        "height": 80
     },
     {
         "position": [
-            92,
-            357
+            416,
+            272
         ],
         "width": 300,
-        "height": 90
+        "height": 80
     }
 ]
