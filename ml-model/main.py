@@ -11,11 +11,6 @@ import time
 
 cred = credentials.Certificate('ml-model/credentials.json')
 firebase_admin.initialize_app(cred, {"databaseURL": "https://parkview-3f259-default-rtdb.firebaseio.com/"})
-# ref = db.reference('/')
-# ref.get()
-# temp = [1,2,4]
-# db.reference('/lots/lot-h').set(temp)
-# ref.get()
 
 def load_parking_spaces(filename='ParkingSpaces.json'):
     try:
@@ -56,17 +51,6 @@ def check_parking_status(frame, processed_frame, parking_spaces):
 
     cv2.putText(frame, f'Available Space: {space_counter}/{len(parking_spaces)}', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 200, 0), 3)
     return current_occupied
-    #  Compare current and previous occupied sets and update Firebase
-    # newly_occupied = current_occupied - previous_occupied
-    # newly_freed = previous_occupied - current_occupied
-
-    # for space_id in newly_occupied:
-    #     db.reference(f'/occupied_spaces/{space_id}').set(True)
-
-    # for space_id in newly_freed:
-    #     db.reference(f'/occupied_spaces/{space_id}').delete()
-
-    # occupied_spaces = current_occupied
     
 def update_database(current_occupied, all_parking_spaces):
     for space_id in all_parking_spaces:
