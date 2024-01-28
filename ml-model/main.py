@@ -112,9 +112,12 @@ class ParkingSpaceApp:
             self.draw_parking_spaces()
 
     def save_parking_spaces(self):
-        spaces_to_save = [{'position': pos, 'width': self.box_width, 'height': self.box_height} for pos in self.parking_spaces]
+    # Use enumerate to generate an ID for each position
+        spaces_to_save = [{'id': i, 'position': pos, 'width': self.box_width, 'height': self.box_height} 
+                        for i, pos in enumerate(self.parking_spaces, start=1)]  # start=1 will start IDs from 1
         with open('ParkingSpaces.json', 'w') as file:
             json.dump(spaces_to_save, file, indent=4)
+
 
 if __name__ == "__main__":
     root = tk.Tk()

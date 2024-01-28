@@ -36,12 +36,15 @@ def check_parking_status(frame, processed_frame, parking_spaces):
         count = cv2.countNonZero(parking_area)
 
         if count < 850:  # Threshold to adjust based on your scenario
+            #Turning green
             color = (0, 255, 0)
             thickness = 5
             space_counter += 1
         else:
+            #Turning red
             color = (0, 0, 255)
             thickness = 2
+            print(space['id'])
 
         cv2.rectangle(frame, (x, y), (x + w, y + h), color, thickness)
         # Uncomment the next line to display the count on each parking space
