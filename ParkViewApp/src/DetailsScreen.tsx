@@ -4,7 +4,7 @@ import ParkingLotMap from './ParkingLotMap/ParkingLotMap';
 import TimeChart from './TimeChart.js'; 
 
 const DetailsScreen = ({ navigation, route }) => {
-    const { item } = route.params;
+    const { lot: item } = route.params;
     const carData = [
         { time: '9:00', carCount: 12 },
         { time: '10:00', carCount: 30 },

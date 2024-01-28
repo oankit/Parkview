@@ -3,30 +3,41 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import database from '@react-native-firebase/database';
 
-const HomeScreen = ({ navigation }) => {
-    // sample realtime code demo:
-    const [data, setData] = useState<any>(null);
+const HomeScreen = () => {
+    const navigation = useNavigation();
+    const [parkingLots, setParkingLots] = useState([
+        // Initialize with default values. These will be updated in useEffect.
+        { id: '1', name: 'Lot A', total: 0, available: 0 },
+        { id: '2', name: 'Gym Short term', total: 23, available: 0 },
+        { id: '3', name: 'Lot B', total: 15, available: 20 },
+        { id: '4', name: 'Lot E', total: 8, available: 30 },
+        { id: '5', name: 'Lot F', total: 12, available: 32 },
+        { id: '6', name: 'UNC Short-Term', total: 6, available: 41},
+       { id: '7', name: 'Lot G', total: 30, available: 72 },
+    { id: '8', name: 'Lot I', total: 42, available: 112 },
+    { id: '9', name: 'Lot K', total: 10, available: 26 },
+    { id: '10', name: 'Lot S', total: 2, available: 25 },
+
+    ]);
 
     useEffect(() => {
-        const reference = database().ref('/occupied_spaces');
- 
+        const occupiedRef = database().ref('/occupied_spaces');
 
-        // Listen for changes in the /lots/lot-h/name path
-        const onDataChange = reference.on('value', snapshot => {
-            console.log('Updated data: ', snapshot.val());
-            setData(snapshot.val());
+        const onOccupiedChange = occupiedRef.on('value', snapshot => {
+            const spaces = snapshot.val();
+            const totalSpaces = Object.keys(spaces).length;
+            const availableSpaces = Object.values(spaces).filter(isAvailable => !isAvailable).length;
+
+            setParkingLots(lots => lots.map(lot => {
+                if (lot.name === 'Lot A') {
+                    return { ...lot, total: totalSpaces, available: availableSpaces };
+                }
+                return lot;
+            }));
         });
 
-        // Unsubscribe from the listener when the component is unmounted
-        return () => reference.off('value', onDataChange);
+        return () => occupiedRef.off('value', onOccupiedChange);
     }, []);
-
-    const parkingLots = [
-        { id: '1', name: 'Lot A', total: 20, available: 10 },
-        { id: '2', name: 'Lot B', total: 10, available: 5 },
-        { id: '3', name: 'Lot C', total: 15, available: 0 },
-        // Add more parking lots as needed
-    ];
 
     return (
         <View style={styles.container}>
@@ -34,15 +45,12 @@ const HomeScreen = ({ navigation }) => {
             <FlatList
                 data={parkingLots}
                 renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => navigation.navigate('Details', { item })}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Details', { lot: item })}>
                         <View style={styles.itemContainer}>
                             <Text style={styles.itemName}>{item.name}</Text>
                             <Text style={styles.itemAvailableSpaces}>
                                 Available Spaces: {item.available}/{item.total}
                             </Text>
-
-                            <Text>Sample Data: {JSON.stringify(data)}</Text>
-
                         </View>
                     </TouchableOpacity>
                 )}
@@ -67,7 +75,6 @@ const styles = StyleSheet.create({
         color: '#fff',
     },
     itemContainer: {
-        // Style for the container of each item
         padding: 10,
         marginVertical: 8,
         marginHorizontal: 16,
@@ -75,14 +82,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     itemName: {
-        // Style for the parking lot name
         fontSize: 16,
         fontWeight: 'bold',
     },
     itemAvailableSpaces: {
-        // Style for the available spaces text
         fontSize: 14,
-        color: 'green', // Example text color
+        color: 'green',
     },
 });
 
