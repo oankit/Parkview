@@ -1,9 +1,8 @@
-// TimeChart.js
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
+import {View, StyleSheet} from 'react-native';
+import {LineChart} from 'react-native-chart-kit';
 
-const TimeChart = ({ data }) => {
+const TimeChart = ({data}) => {
   return (
     <View style={styles.chartContainer}>
       <LineChart
@@ -33,7 +32,6 @@ const TimeChart = ({ data }) => {
             stroke: '#ffa726',
           },
           showYAxisLabel: true, // Display Y-axis label only once
-
         }}
         bezier
         style={styles.chartStyle}

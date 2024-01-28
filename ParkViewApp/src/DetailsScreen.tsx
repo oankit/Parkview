@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ParkingLotMap from './ParkingLotMap/ParkingLotMap';
-import TimeChart from './TimeChart.js'; 
+import TimeChart from './TimeChart.js';
 
 const DetailsScreen = ({ navigation, route }) => {
     const { lot: item } = route.params;
@@ -9,10 +9,10 @@ const DetailsScreen = ({ navigation, route }) => {
         { time: '9:00', carCount: 12 },
         { time: '10:00', carCount: 30 },
         { time: '12:00', carCount: 25 },
-        { time: '15:00', carCount: 20},
+        { time: '15:00', carCount: 20 },
         { time: '18:00', carCount: 10 },
-    
-      ];
+
+    ];
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
@@ -26,11 +26,11 @@ const DetailsScreen = ({ navigation, route }) => {
             {/* Parking lot map will be rendered here */}
 
             <ParkingLotMap parkingLotData={item.parkingLotData} />
-              {/* Render the TimeChart component with the carData */}
-      <View style={styles.centeredContainer}>
-      <TimeChart data={carData} />
-      <Text style={styles.Title}>Popular Times</Text>
-      </View>
+            {/* Render the TimeChart component with the carData */}
+            <View style={styles.centeredContainer}>
+                <TimeChart data={carData} />
+                <Text style={styles.Title}>Popular Times</Text>
+            </View>
         </View>
     );
 };
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-      },
+    },
     headerContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -76,13 +76,13 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-      },
+    },
 
-      Title: {
+    Title: {
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 8,
-      },
+    },
 });
 
 
