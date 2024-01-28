@@ -35,7 +35,7 @@ def check_parking_status(frame, processed_frame, parking_spaces):
 
         count = cv2.countNonZero(parking_area)
 
-        if count < 850:  # Threshold to adjust based on your scenario
+        if count < 600:  # Threshold to adjust based on your scenario
             #Turning green
             color = (0, 255, 0)
             thickness = 5
@@ -49,7 +49,7 @@ def check_parking_status(frame, processed_frame, parking_spaces):
         cv2.rectangle(frame, (x, y), (x + w, y + h), color, thickness)
         # cv2.putText(frame, str(count), (x, y + h - 3), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
 
-    cv2.putText(frame, f'Available Space: {space_counter}/{len(parking_spaces)}', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 200, 0), 3)
+    cv2.putText(frame, f'Available Space: {space_counter}/{len(parking_spaces)}', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 200, 0), 3)
     return current_occupied
     
 def update_database(current_occupied, all_parking_spaces):
@@ -103,7 +103,7 @@ def main():
 
         if not use_ip_camera or frame is None:  # If IP camera is not available or local source is chosen
             if cap is None:  # Initialize if not already done
-                cap = cv2.VideoCapture('ml-model/carpark-paper/IMG_7788.mp4')
+                cap = cv2.VideoCapture('ml-model/carpark1/carPark.mp4')
             ret, frame = cap.read()
             if not ret:
                 print("Error reading from local video source.")
@@ -119,9 +119,9 @@ def main():
 
         current_occupied = check_parking_status(frame, imgDilate, parking_spaces)
 
-        if time.time() - last_update_time > update_interval:
-            update_database(current_occupied, all_parking_space_ids)
-            last_update_time = time.time()
+        # if time.time() - last_update_time > update_interval:
+        #     update_database(current_occupied, all_parking_space_ids)
+        #     last_update_time = time.time()
 
         cv2.imshow("Parking Lot Status", frame)
         if cv2.waitKey(5) & 0xFF == 27:  # ESC key to exit
