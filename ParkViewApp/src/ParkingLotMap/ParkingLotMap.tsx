@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Dimensions, ScrollView } from 'react-native';
 import parkingSpacesData from './ParkingSpaces.json';
-import carImage from './car.png'; // Ensure this image is in your project directory
+import carImage from './car.png'; 
 
 const { width: screenWidth } = Dimensions.get('window');
 
@@ -11,17 +11,17 @@ const ParkingLotMap = () => {
   useEffect(() => {
     const newOccupiedSpaces = new Map();
     parkingSpacesData.forEach((_, index) => {
-      newOccupiedSpaces.set(index, Math.random() < 0.5); // Random occupancy for demo purposes
+      newOccupiedSpaces.set(index, Math.random() < 0.5); 
     });
     setOccupiedSpaces(newOccupiedSpaces);
   }, []);
 
-  // Calculate the scale based on max width and height found in your parking spaces
+
   const maxWidth = Math.max(...parkingSpacesData.map(s => s.position[0] + s.width));
   const maxHeight = Math.max(...parkingSpacesData.map(s => s.position[1] + s.height));
   const scaleX = screenWidth / maxWidth;
-  const scaleY = scaleX; // Keeping aspect ratio consistent
-  const spaceGap = 2; // Gap between spaces for parking lines
+  const scaleY = scaleX; 
+  const spaceGap = 0; // Gap between spaces for parking lines
 
   return (
     <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
@@ -56,10 +56,9 @@ const ParkingLotMap = () => {
   );
 };
 
-// Render parking lines based on space positioning
+
 const renderParkingLines = (parkingSpacesData, scaleX, scaleY, spaceGap) => {
-  // Your logic for rendering parking lines between spaces
-  // This could be as simple as rendering a thin View with a background color representing the line
+  
   return parkingSpacesData.map((space, index) => (
     <View
       key={`line-${index}`}
@@ -69,7 +68,7 @@ const renderParkingLines = (parkingSpacesData, scaleX, scaleY, spaceGap) => {
         top: space.position[1] * scaleY,
         width: spaceGap,
         height: space.height * scaleY,
-        backgroundColor: 'yellow', // Color for the parking line
+        backgroundColor: 'yellow', 
       }}
     />
   ));
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#000',
-    borderRadius: 4, // Rounded corners for parking spaces
+    borderRadius: 4, 
   },
   car: {
     width: '100%',

@@ -8,7 +8,8 @@ const HomeScreen = ({ navigation }) => {
     const [data, setData] = useState<any>(null);
 
     useEffect(() => {
-        const reference = database().ref('/lots/lot-h/name');
+        const reference = database().ref('/occupied_spaces');
+ 
 
         // Listen for changes in the /lots/lot-h/name path
         const onDataChange = reference.on('value', snapshot => {

@@ -1,11 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import ParkingLotMap from './ParkingLotMap/ParkingLotMap';
-
+import TimeChart from './TimeChart.js'; 
 
 const DetailsScreen = ({ navigation, route }) => {
     const { item } = route.params;
-
+    const carData = [
+        { time: '9:00', carCount: 12 },
+        { time: '10:00', carCount: 30 },
+        { time: '12:00', carCount: 25 },
+        { time: '15:00', carCount: 20},
+        { time: '18:00', carCount: 10 },
+    
+      ];
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}>
@@ -18,6 +25,10 @@ const DetailsScreen = ({ navigation, route }) => {
             <Text style={styles.itemDetails}>Details for {item.name}</Text>
             {/* Parking lot map will be rendered here */}
             <ParkingLotMap parkingLotData={item.parkingLotData} />
+              {/* Render the TimeChart component with the carData */}
+      <View style={styles.centeredContainer}>
+      <TimeChart data={carData} />
+      </View>
         </View>
     );
 };
@@ -58,5 +69,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
 });
+
 
 export default DetailsScreen;
