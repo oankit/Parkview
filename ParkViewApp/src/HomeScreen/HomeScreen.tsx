@@ -9,14 +9,14 @@ const HomeScreen = () => {
         // Initialize with default values. These will be updated in useEffect.
         { id: '1', name: 'Lot A', total: 0, available: 0 },
         { id: '2', name: 'Gym Short term', total: 23, available: 0 },
-        { id: '3', name: 'Lot B', total: 15, available: 20 },
-        { id: '4', name: 'Lot E', total: 8, available: 30 },
-        { id: '5', name: 'Lot F', total: 12, available: 32 },
-        { id: '6', name: 'UNC Short-Term', total: 6, available: 41},
-       { id: '7', name: 'Lot G', total: 30, available: 72 },
-    { id: '8', name: 'Lot I', total: 42, available: 112 },
-    { id: '9', name: 'Lot K', total: 10, available: 26 },
-    { id: '10', name: 'Lot S', total: 2, available: 25 },
+        { id: '3', name: 'Lot B', total: 15, available: 10 },
+        { id: '4', name: 'Lot E', total: 32, available: 30},
+        { id: '5', name: 'Lot F', total: 25, available: 20},
+        { id: '6', name: 'UNC Short-Term', total: 20, available: 15},
+       { id: '7', name: 'Lot G', total: 30, available: 18 },
+    { id: '8', name: 'Lot I', total: 42, available: 30 },
+    { id: '9', name: 'Lot K', total: 65, available: 26 },
+    { id: '10', name: 'Lot S', total: 55, available: 25 },
 
     ]);
 
