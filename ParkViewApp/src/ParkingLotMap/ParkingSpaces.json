@@ -1,0 +1,66 @@
+[
+    {
+        "position": [
+            396,
+            53
+        ],
+        "width": 300,
+        "height": 90
+    },
+    {
+        "position": [
+            404,
+            144
+        ],
+        "width": 300,
+        "height": 90
+    },
+    {
+        "position": [
+            406,
+            248
+        ],
+        "width": 300,
+        "height": 90
+    },
+    {
+        "position": [
+            406,
+            348
+        ],
+        "width": 300,
+        "height": 90
+    },
+    {
+        "position": [
+            63,
+            32
+        ],
+        "width": 300,
+        "height": 90
+    },
+    {
+        "position": [
+            78,
+            148
+        ],
+        "width": 300,
+        "height": 90
+    },
+    {
+        "position": [
+            88,
+            244
+        ],
+        "width": 300,
+        "height": 90
+    },
+    {
+        "position": [
+            92,
+            357
+        ],
+        "width": 300,
+        "height": 90
+    }
+]
