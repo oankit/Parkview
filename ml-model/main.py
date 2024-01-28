@@ -104,8 +104,8 @@ def main():
 
         if not use_ip_camera or frame is None:  # If IP camera is not available or local source is chosen
             if cap is None:  # Initialize if not already done
-                cap = cv2.VideoCapture('ml-model/carpark-paper/IMG_7788.mp4')
-                # cap = cv2.VideoCapture('ml-model/carpark1/carPark.mp4')
+                # cap = cv2.VideoCapture('ml-model/carpark-paper/IMG_7788.mp4')
+                cap = cv2.VideoCapture('ml-model/carpark1/carPark.mp4')
             ret, frame = cap.read()
             if not ret:
                 print("Error reading from local video source.")
