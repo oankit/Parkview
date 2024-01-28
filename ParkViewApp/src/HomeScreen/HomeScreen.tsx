@@ -1,8 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import database from '@react-native-firebase/database';
 
 const HomeScreen = ({ navigation }) => {
+    // sample realtime code demo:
+    const [data, setData] = useState<any>(null);
+
+    useEffect(() => {
+        const reference = database().ref('/lots/lot-h/name');
+
+        // Listen for changes in the /lots/lot-h/name path
+        const onDataChange = reference.on('value', snapshot => {
+            console.log('Updated data: ', snapshot.val());
+            setData(snapshot.val());
+        });
+
+        // Unsubscribe from the listener when the component is unmounted
+        return () => reference.off('value', onDataChange);
+    }, []);
+
     const parkingLots = [
         { id: '1', name: 'Lot A', total: 20, available: 10 },
         { id: '2', name: 'Lot B', total: 10, available: 5 },
@@ -22,6 +39,7 @@ const HomeScreen = ({ navigation }) => {
                             <Text style={styles.itemAvailableSpaces}>
                                 Available Spaces: {item.available}/{item.total}
                             </Text>
+                            <Text>Sample Data: {JSON.stringify(data)}</Text>
                         </View>
                     </TouchableOpacity>
                 )}
