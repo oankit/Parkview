@@ -108,7 +108,7 @@ def main():
         check_parking_status(frame, imgDilate, parking_spaces)
 
         cv2.imshow("Parking Lot Status", frame)
-        if cv2.waitKey(1) & 0xFF == 27:  # ESC key to exit
+        if cv2.waitKey(5) & 0xFF == 27:  # ESC key to exit
             break
 
     if cap:
