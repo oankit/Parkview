@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image, Dimensions, ScrollView } from 'react-native';
-
-// Load your parking spaces data and car image
 import parkingSpacesData from './ParkingSpaces.json';
 import carImage from './car.png'; // Ensure this image is in your project directory
 

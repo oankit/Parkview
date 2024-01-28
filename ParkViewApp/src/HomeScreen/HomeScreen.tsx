@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 95af85ab894f57b348fb9c4596f4949015d50298
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
-const HomeScreen = ({ navigation }) => {
-    const parkingLots = [
-        { id: '1', name: 'Lot A', total: 20, available: 10, },
-<<<<<<< HEAD
-=======
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -35,9 +22,6 @@ const HomeScreen = ({ navigation }) => {
 
     const parkingLots = [
         { id: '1', name: 'Lot A', total: 20, available: 10 },
->>>>>>> origin/main
-=======
->>>>>>> 95af85ab894f57b348fb9c4596f4949015d50298
         { id: '2', name: 'Lot B', total: 10, available: 5 },
         { id: '3', name: 'Lot C', total: 15, available: 0 },
         // Add more parking lots as needed
@@ -55,13 +39,9 @@ const HomeScreen = ({ navigation }) => {
                             <Text style={styles.itemAvailableSpaces}>
                                 Available Spaces: {item.available}/{item.total}
                             </Text>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
                             <Text>Sample Data: {JSON.stringify(data)}</Text>
->>>>>>> origin/main
-=======
->>>>>>> 95af85ab894f57b348fb9c4596f4949015d50298
+
                         </View>
                     </TouchableOpacity>
                 )}

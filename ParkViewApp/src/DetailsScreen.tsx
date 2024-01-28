@@ -59,8 +59,4 @@ const styles = StyleSheet.create({
     },
 });
 
-<<<<<<< HEAD
 export default DetailsScreen;
-=======
-export default DetailsScreen;
->>>>>>> 95af85ab894f57b348fb9c4596f4949015d50298
