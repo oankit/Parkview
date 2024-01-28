@@ -25,11 +25,12 @@ const DetailsScreen = ({ navigation, route }) => {
       </View>
       <Text style={styles.itemDetails}>Details for {item.name}</Text>
 
+            {/* Render the Group component */}
+            <Group />
+
       {/* Render the TimeChart component with the carData */}
       <TimeChart data={carData} />
 
-      {/* Render the Group component */}
-      <Group />
     </View>
   );
 };
