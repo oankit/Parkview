@@ -24,10 +24,12 @@ const DetailsScreen = ({ navigation, route }) => {
             </View>
             <Text style={styles.itemDetails}>Details for {item.name}</Text>
             {/* Parking lot map will be rendered here */}
+
             <ParkingLotMap parkingLotData={item.parkingLotData} />
               {/* Render the TimeChart component with the carData */}
       <View style={styles.centeredContainer}>
       <TimeChart data={carData} />
+      <Text style={styles.Title}>Popular Times</Text>
       </View>
         </View>
     );
@@ -36,7 +38,8 @@ const DetailsScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
+        backgroundColor: '#fff',
+      },
     headerContainer: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -68,6 +71,18 @@ const styles = StyleSheet.create({
         padding: 10,
         fontSize: 18,
     },
+
+    centeredContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+
+      Title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 8,
+      },
 });
 
 

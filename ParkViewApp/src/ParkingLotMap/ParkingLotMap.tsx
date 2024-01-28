@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   car: {
     width: '100%',
     height: '100%',
+    backgroundColor: 'transparent',
   },
 });
 
