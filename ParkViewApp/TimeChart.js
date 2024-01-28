@@ -17,9 +17,9 @@ const TimeChart = ({ data }) => {
         }}
         width={300}
         height={200}
-        yAxisLabel="Cars"
+        // yAxisLabel="Cars"
         chartConfig={{
-          backgroundGradientFrom: '#fff',
+          backgroundGradientFrom: '#eee',
           backgroundGradientTo: '#eee',
           decimalPlaces: 0,
           color: (opacity = 1) => `rgba(0, 0, 255, ${opacity})`,
@@ -32,6 +32,8 @@ const TimeChart = ({ data }) => {
             strokeWidth: '2',
             stroke: '#ffa726',
           },
+          showYAxisLabel: true, // Display Y-axis label only once
+
         }}
         bezier
         style={styles.chartStyle}

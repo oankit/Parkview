@@ -1,17 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import TimeChart from '../TimeChart.js';  // Import the TimeChart component
-import Group from './Group.tsx';  // Import the Group component
+import Map from './Map.tsx';  // Import the Map component
 
 const DetailsScreen = ({ navigation, route }) => {
   const { item } = route.params;
 
   // Example data (replace with your actual data structure)
   const carData = [
-    { time: '8:00 AM', carCount: 5 },
-    { time: '9:00 AM', carCount: 8 },
-    { time: '10:00 AM', carCount: 12 },
-    // ... add more data
+    { time: '9:00', carCount: 8 },
+    { time: '10:00', carCount: 12 },
+    { time: '12:00', carCount: 8 },
+    { time: '15:00', carCount: 8 },
+    { time: '18:00', carCount: 3 },
+
   ];
 
   return (
@@ -25,11 +27,13 @@ const DetailsScreen = ({ navigation, route }) => {
       </View>
       <Text style={styles.itemDetails}>Details for {item.name}</Text>
 
-            {/* Render the Group component */}
-            <Group />
+            {/* Render the Map component */}
+            <Map />
 
       {/* Render the TimeChart component with the carData */}
+      <View style={styles.centeredContainer}>
       <TimeChart data={carData} />
+      </View>
 
     </View>
   );
@@ -38,6 +42,7 @@ const DetailsScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff', 
   },
   headerContainer: {
     flexDirection: 'row',
@@ -69,6 +74,12 @@ const styles = StyleSheet.create({
   itemDetails: {
     padding: 10,
     fontSize: 18,
+  },
+
+  centeredContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
