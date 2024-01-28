@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import TimeChart from '../TimeChart.js';  // Import the TimeChart component
+import Group from './Group.tsx';  // Import the Group component
 
 const DetailsScreen = ({ navigation, route }) => {
   const { item } = route.params;
@@ -26,6 +27,9 @@ const DetailsScreen = ({ navigation, route }) => {
 
       {/* Render the TimeChart component with the carData */}
       <TimeChart data={carData} />
+
+      {/* Render the Group component */}
+      <Group />
     </View>
   );
 };
