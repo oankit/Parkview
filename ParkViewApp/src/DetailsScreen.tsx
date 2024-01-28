@@ -29,10 +29,10 @@ const DetailsScreen = ({ navigation, route }) => {
     }, []);
 
     const carData = [
-        { time: '9:00', carCount: 12 },
-        { time: '10:00', carCount: 30 },
-        { time: '12:00', carCount: 25 },
-        { time: '15:00', carCount: 20 },
+        { time: '9:00', carCount: 30 },
+        { time: '10:00', carCount: 60 },
+        { time: '12:00', carCount: 65 },
+        { time: '15:00', carCount: 35 },
         { time: '18:00', carCount: 10 },
     ];
 
