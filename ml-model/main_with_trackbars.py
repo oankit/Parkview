@@ -5,6 +5,15 @@ import urllib
 import urllib.request as urllib
 import tkinter as tk
 from tkinter import simpledialog
+import firebase_admin
+from firebase_admin import db, credentials
+
+cred = credentials.Certificate('ml-model/credentials.json')
+firebase_admin.initialize_app(cred, {"databaseURL": "https://parkview-3f259-default-rtdb.firebaseio.com/"})
+ref = db.reference('/')
+ref.get()
+db.reference('/lots/lot-h/name').set('Lot H')
+ref.get()
 
 def load_parking_spaces(filename='ParkingSpaces.json'):
     try:
