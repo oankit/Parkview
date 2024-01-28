@@ -1,125 +1,119 @@
 import cv2
+import numpy as np
 import json
+import urllib
+import urllib.request as urllib
 import tkinter as tk
-from tkinter import filedialog, Label, Entry
-from PIL import Image, ImageTk
+from tkinter import simpledialog
+import firebase_admin
+from firebase_admin import db, credentials
 
-class ParkingSpaceApp:
-    def __init__(self, master):
-        self.master = master
-        self.master.title("Parking Space Picker")
+cred = credentials.Certificate('ml-model/credentials.json')
+firebase_admin.initialize_app(cred, {"databaseURL": "https://parkview-3f259-default-rtdb.firebaseio.com/"})
+ref = db.reference('/')
+ref.get()
+db.reference('/lots/lot-h/name').set('Lot H')
+ref.get()
 
-        # GUI Components
-        self.canvas = tk.Canvas(master, width=800, height=600)
-        self.canvas.pack()
+def load_parking_spaces(filename='ParkingSpaces.json'):
+    try:
+        with open(filename, 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
 
-        self.load_button = tk.Button(master, text="Load Video", command=self.load_video_frame)
-        self.load_button.pack()
+def resize_frame(frame, width=800, height=600):
+    return cv2.resize(frame, (width, height))
 
-        self.save_button = tk.Button(master, text="Save Spaces", command=self.save_parking_spaces)
-        self.save_button.pack()
+def check_parking_status(frame, processed_frame, parking_spaces):
+    space_counter = 0
 
-        self.undo_button = tk.Button(master, text="Undo", command=self.undo_last_action)
-        self.undo_button.pack()
+    for space in parking_spaces:
+        x, y = space['position']
+        w, h = space['width'], space['height']
+        parking_area = processed_frame[y:y + h, x:x + w]
 
-        # Box size controls
-        self.label_width = Label(master, text="Width:")
-        self.label_width.pack()
+        count = cv2.countNonZero(parking_area)
 
-        self.entry_width = Entry(master)
-        self.entry_width.pack()
-        self.entry_width.insert(0, "80")  # Default width
+        if count < 850:  # Threshold to adjust based on your scenario
+            #Turning green
+            color = (0, 255, 0)
+            thickness = 5
+            space_counter += 1
+        else:
+            #Turning red
+            color = (0, 0, 255)
+            thickness = 2
+            print(space['id'])
 
-        self.label_height = Label(master, text="Height:")
-        self.label_height.pack()
+        cv2.rectangle(frame, (x, y), (x + w, y + h), color, thickness)
+        # Uncomment the next line to display the count on each parking space
+        cv2.putText(frame, str(count), (x, y + h - 3), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
 
-        self.entry_height = Entry(master)
-        self.entry_height.pack()
-        self.entry_height.insert(0, "40")  # Default height
+    cv2.putText(frame, f'Available Space: {space_counter}/{len(parking_spaces)}', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 200, 0), 3)
 
-        self.set_size_button = tk.Button(master, text="Set Box Size", command=self.set_box_size)
-        self.set_size_button.pack()
+def read_ip_camera(url):
+    try:
+        with urllib.urlopen(url) as imgResp:
+            imgNp = np.array(bytearray(imgResp.read()), dtype=np.uint8)
+            frame = cv2.imdecode(imgNp, -1)
+            return frame
+    except Exception as e:
+        print("Error reading from IP Camera:", e)
+        return None
+    
+def get_user_choice():
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    user_choice = simpledialog.askstring("Input", "Enter 1 for Local Video or 2 for IP Camera:", parent=root)
+    root.destroy()
+    return user_choice
 
-        self.canvas.bind("<Button-1>", self.left_click)
-        self.canvas.bind("<Button-3>", self.right_click)
+def main():
+    ip_camera_url = 'http://142.231.30.74:8080/shot.jpg'
+    parking_spaces = load_parking_spaces()
 
-        # Initialize variables
-        self.parking_spaces = []
-        self.current_image = None
-        self.box_width = 80
-        self.box_height = 40
-        self.history = []
-        self.redo_stack = []
-        self.tk_image = None
+    # Get user choice through GUI
+    choice = get_user_choice()
+    cap = None  # Initialize video capture for local source
+    use_ip_camera = choice == '2'
+    
+    if use_ip_camera:
+            test_frame = read_ip_camera(ip_camera_url)
+            if test_frame is None:
+                print("Error: Unable to access the live IP camera source.")
+                return 
+    
+    while True:
+        frame = None
+        if use_ip_camera:
+            frame = read_ip_camera(ip_camera_url)
 
-    def set_box_size(self):
-        try:
-            self.box_width = int(self.entry_width.get())
-            self.box_height = int(self.entry_height.get())
-            self.draw_parking_spaces()
-        except ValueError:
-            print("Invalid width or height. Please enter numeric values.")
+        if not use_ip_camera or frame is None:  # If IP camera is not available or local source is chosen
+            if cap is None:  # Initialize if not already done
+                cap = cv2.VideoCapture('ml-model/carpark-paper/IMG_7788.mp4')
+            ret, frame = cap.read()
+            if not ret:
+                print("Error reading from local video source.")
+                break
 
-    def load_video_frame(self):
-        file_path = filedialog.askopenfilename(filetypes=[("MP4 video", "*.mp4"), ("All files", "*.*")])
-        if file_path:
-            cap = cv2.VideoCapture(file_path)
-            success, self.current_image = cap.read()
-            cap.release()
-            if success:
-                self.display_image()
-            else:
-                print("Failed to capture video frame.")
+        frame = resize_frame(frame)
+        gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        blur_frame = cv2.GaussianBlur(gray_frame, (3, 3), 1)
+        imgThreshold = cv2.adaptiveThreshold(blur_frame, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 25, 16)
+        imgMedian = cv2.medianBlur(imgThreshold, 5)
+        kernel = np.ones((3, 3), np.uint8)
+        imgDilate = cv2.dilate(imgMedian, kernel, iterations=1)
 
-    def display_image(self):
-        if self.current_image is not None:
-            image = cv2.cvtColor(self.current_image, cv2.COLOR_BGR2RGB)
-            image = Image.fromarray(image)
-            if image.width > 800 or image.height > 600:
-                image = image.resize((800, 600), Image.Resampling.LANCZOS)  # Updated here
-            self.tk_image = ImageTk.PhotoImage(image)
-            self.canvas.create_image(0, 0, anchor=tk.NW, image=self.tk_image)
-            self.draw_parking_spaces()
+        check_parking_status(frame, imgDilate, parking_spaces)
 
-    def draw_parking_spaces(self):
-        self.canvas.delete("space")  # Remove existing boxes
-        for pos in self.parking_spaces:
-            x, y = pos
-            self.canvas.create_rectangle(x, y, x + self.box_width, y + self.box_height, outline="magenta", tags="space")
+        cv2.imshow("Parking Lot Status", frame)
+        if cv2.waitKey(1) & 0xFF == 27:  # ESC key to exit
+            break
 
-    def left_click(self, event):
-        self.history.append(list(self.parking_spaces))  # Save current state
-        self.parking_spaces.append((event.x, event.y))
-        self.draw_parking_spaces()
-
-    def right_click(self, event):
-        closest_space = None
-        min_distance = float('inf')
-        for i, pos in enumerate(self.parking_spaces):
-            x, y = pos
-            distance = ((x - event.x) ** 2 + (y - event.y) ** 2) ** 0.5
-            if distance < min_distance:
-                min_distance = distance
-                closest_space = i
-        if closest_space is not None:
-            self.history.append(list(self.parking_spaces))  # Save current state
-            self.parking_spaces.pop(closest_space)
-            self.draw_parking_spaces()
-
-    def undo_last_action(self):
-        if self.history:
-            self.parking_spaces = self.history.pop()
-            self.draw_parking_spaces()
-
-    def save_parking_spaces(self):
-    # Use enumerate to generate an ID for each position
-        spaces_to_save = [{'id': i, 'position': pos, 'width': self.box_width, 'height': self.box_height} 
-                        for i, pos in enumerate(self.parking_spaces, start=1)]  # start=1 will start IDs from 1
-        with open('ParkingSpaces.json', 'w') as file:
-            json.dump(spaces_to_save, file, indent=4)
-
+    if cap:
+        cap.release()
+    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = ParkingSpaceApp(root)
-    root.mainloop()
+    main()
