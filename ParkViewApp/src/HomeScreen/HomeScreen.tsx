@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -5,6 +6,32 @@ import { useNavigation } from '@react-navigation/native';
 const HomeScreen = ({ navigation }) => {
     const parkingLots = [
         { id: '1', name: 'Lot A', total: 20, available: 10, },
+=======
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import database from '@react-native-firebase/database';
+
+const HomeScreen = ({ navigation }) => {
+    // sample realtime code demo:
+    const [data, setData] = useState<any>(null);
+
+    useEffect(() => {
+        const reference = database().ref('/lots/lot-h/name');
+
+        // Listen for changes in the /lots/lot-h/name path
+        const onDataChange = reference.on('value', snapshot => {
+            console.log('Updated data: ', snapshot.val());
+            setData(snapshot.val());
+        });
+
+        // Unsubscribe from the listener when the component is unmounted
+        return () => reference.off('value', onDataChange);
+    }, []);
+
+    const parkingLots = [
+        { id: '1', name: 'Lot A', total: 20, available: 10 },
+>>>>>>> origin/main
         { id: '2', name: 'Lot B', total: 10, available: 5 },
         { id: '3', name: 'Lot C', total: 15, available: 0 },
         // Add more parking lots as needed
@@ -22,6 +49,10 @@ const HomeScreen = ({ navigation }) => {
                             <Text style={styles.itemAvailableSpaces}>
                                 Available Spaces: {item.available}/{item.total}
                             </Text>
+<<<<<<< HEAD
+=======
+                            <Text>Sample Data: {JSON.stringify(data)}</Text>
+>>>>>>> origin/main
                         </View>
                     </TouchableOpacity>
                 )}
