@@ -12,19 +12,18 @@ const ParkingLotMap = () => {
     useEffect(() => {
         const reference = database().ref('/occupied_spaces');
 
-        // Listen for changes in the /occupied_spaces path
         const onDataChange = reference.on('value', snapshot => {
             const dataFromDatabase = snapshot.val();
             const newOccupiedSpaces = new Map();
 
-            parkingSpacesData.forEach((_, index) => {
-                newOccupiedSpaces.set(index, dataFromDatabase && dataFromDatabase[index]);
+            parkingSpacesData.forEach(space => {
+                // Use the 'id' from the parking space data
+                newOccupiedSpaces.set(space.id, dataFromDatabase && dataFromDatabase[space.id]);
             });
 
             setOccupiedSpaces(newOccupiedSpaces);
         });
 
-        // Unsubscribe from the listener when the component is unmounted
         return () => reference.off('value', onDataChange);
     }, []);
 
@@ -38,7 +37,7 @@ const ParkingLotMap = () => {
         <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentContainer}>
             <View style={{ width: maxWidth * scaleX, height: maxHeight * scaleY }}>
                 {parkingSpacesData.map((space, index) => {
-                    const isOccupied = occupiedSpaces.get(index);
+                    const isOccupied = occupiedSpaces.get(space.id);
 
                     const left = space.position[0] * scaleX;
                     const top = space.position[1] * scaleY;
@@ -54,7 +53,7 @@ const ParkingLotMap = () => {
                     };
 
                     return (
-                        <View key={`space-${index}`} style={[styles.space, spaceStyle]}>
+                        <View key={`space-${space.id}`} style={[styles.space, spaceStyle]}>
                             {isOccupied && (
                                 <Image source={carImage} style={styles.car} resizeMode="contain" />
                             )}

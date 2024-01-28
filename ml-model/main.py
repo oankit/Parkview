@@ -94,7 +94,7 @@ def main():
             print("Error: Unable to access the live IP camera source.")
             return 
     
-    update_interval = 5  # seconds
+    update_interval = 2  # seconds
     last_update_time = time.time()
     
     while True: 
