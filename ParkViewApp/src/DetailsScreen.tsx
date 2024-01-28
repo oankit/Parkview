@@ -19,14 +19,19 @@ const DetailsScreen = ({ navigation, route }) => {
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
                     <Text style={styles.backButtonText}>Back</Text>
                 </TouchableOpacity>
-                <Text style={styles.header}>UBCO ParkView</Text>
+                <Text style={styles.header}>Lot Details</Text>
                 <View style={styles.placeholder} />
             </View>
-            <Text style={styles.itemDetails}>Details for {item.name}</Text>
+           
+            {/* <Text style={styles.itemDetails}>Details for {item.name}</Text> */}
             {/* Parking lot map will be rendered here */}
-
+            
             <ParkingLotMap parkingLotData={item.parkingLotData} />
             {/* Render the TimeChart component with the carData */}
+            <View style={styles.titleContainer}>
+            <Text style={styles.TitleMap}>Map</Text>
+            </View>
+            
             <View style={styles.centeredContainer}>
                 <TimeChart data={carData} />
                 <Text style={styles.Title}>Popular Times</Text>
@@ -39,6 +44,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+    },
+    titleContainer: {
+        alignItems: 'center',
+        marginBottom: 16,
     },
     headerContainer: {
         flexDirection: 'row',
@@ -79,6 +88,12 @@ const styles = StyleSheet.create({
     },
 
     Title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 8,
+    },
+
+    TitleMap: {
         fontSize: 18,
         fontWeight: 'bold',
         marginBottom: 8,
