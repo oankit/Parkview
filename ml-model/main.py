@@ -10,10 +10,11 @@ from firebase_admin import db, credentials
 
 cred = credentials.Certificate('ml-model/credentials.json')
 firebase_admin.initialize_app(cred, {"databaseURL": "https://parkview-3f259-default-rtdb.firebaseio.com/"})
-ref = db.reference('/')
-ref.get()
-db.reference('/lots/lot-h/name').set('Lot H')
-ref.get()
+# ref = db.reference('/')
+# ref.get()
+# temp = [1,2,4]
+# db.reference('/lots/lot-h').set(temp)
+# ref.get()
 
 def load_parking_spaces(filename='ParkingSpaces.json'):
     try:
@@ -27,6 +28,7 @@ def resize_frame(frame, width=800, height=600):
 
 def check_parking_status(frame, processed_frame, parking_spaces):
     space_counter = 0
+    red_spaces_ids = []
 
     for space in parking_spaces:
         x, y = space['position']
@@ -45,12 +47,15 @@ def check_parking_status(frame, processed_frame, parking_spaces):
             color = (0, 0, 255)
             thickness = 2
             print(space['id'])
+            red_spaces_ids.append(space['id'])
 
         cv2.rectangle(frame, (x, y), (x + w, y + h), color, thickness)
         # Uncomment the next line to display the count on each parking space
         cv2.putText(frame, str(count), (x, y + h - 3), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
 
     cv2.putText(frame, f'Available Space: {space_counter}/{len(parking_spaces)}', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 200, 0), 3)
+    # Set the IDs of red spaces to Firebase
+    db.reference('/red_spaces').set(red_spaces_ids)
 
 def read_ip_camera(url):
     try:
