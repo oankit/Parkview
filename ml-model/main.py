@@ -7,13 +7,10 @@ import tkinter as tk
 from tkinter import simpledialog
 import firebase_admin
 from firebase_admin import db, credentials
+import time
 
 cred = credentials.Certificate('ml-model/credentials.json')
 firebase_admin.initialize_app(cred, {"databaseURL": "https://parkview-3f259-default-rtdb.firebaseio.com/"})
-ref = db.reference('/')
-ref.get()
-db.reference('/lots/lot-h/name').set('Lot H')
-ref.get()
 
 def load_parking_spaces(filename='ParkingSpaces.json'):
     try:
@@ -25,7 +22,10 @@ def load_parking_spaces(filename='ParkingSpaces.json'):
 def resize_frame(frame, width=800, height=600):
     return cv2.resize(frame, (width, height))
 
+occupied_spaces = set()
+
 def check_parking_status(frame, processed_frame, parking_spaces):
+    current_occupied = set()
     space_counter = 0
 
     for space in parking_spaces:
@@ -44,14 +44,20 @@ def check_parking_status(frame, processed_frame, parking_spaces):
             #Turning red
             color = (0, 0, 255)
             thickness = 2
-            print(space['id'])
+            current_occupied.add(space['id'])
 
         cv2.rectangle(frame, (x, y), (x + w, y + h), color, thickness)
-        # Uncomment the next line to display the count on each parking space
-        cv2.putText(frame, str(count), (x, y + h - 3), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
+        # cv2.putText(frame, str(count), (x, y + h - 3), cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
 
     cv2.putText(frame, f'Available Space: {space_counter}/{len(parking_spaces)}', (100, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 200, 0), 3)
-
+    return current_occupied
+    
+def update_database(current_occupied, all_parking_spaces):
+    for space_id in all_parking_spaces:
+        # Set True if occupied, False otherwise
+        is_occupied = space_id in current_occupied
+        db.reference(f'/occupied_spaces/{space_id}').set(is_occupied)
+        
 def read_ip_camera(url):
     try:
         with urllib.urlopen(url) as imgResp:
@@ -73,18 +79,24 @@ def main():
     ip_camera_url = 'http://142.231.30.74:8080/shot.jpg'
     parking_spaces = load_parking_spaces()
 
+    # Extract all parking space IDs
+    all_parking_space_ids = [space['id'] for space in parking_spaces]
+
     # Get user choice through GUI
     choice = get_user_choice()
     cap = None  # Initialize video capture for local source
     use_ip_camera = choice == '2'
     
     if use_ip_camera:
-            test_frame = read_ip_camera(ip_camera_url)
-            if test_frame is None:
-                print("Error: Unable to access the live IP camera source.")
-                return 
+        test_frame = read_ip_camera(ip_camera_url)
+        if test_frame is None:
+            print("Error: Unable to access the live IP camera source.")
+            return 
     
-    while True:
+    update_interval = 5  # seconds
+    last_update_time = time.time()
+    
+    while True: 
         frame = None
         if use_ip_camera:
             frame = read_ip_camera(ip_camera_url)
@@ -105,7 +117,11 @@ def main():
         kernel = np.ones((3, 3), np.uint8)
         imgDilate = cv2.dilate(imgMedian, kernel, iterations=1)
 
-        check_parking_status(frame, imgDilate, parking_spaces)
+        current_occupied = check_parking_status(frame, imgDilate, parking_spaces)
+
+        if time.time() - last_update_time > update_interval:
+            update_database(current_occupied, all_parking_space_ids)
+            last_update_time = time.time()
 
         cv2.imshow("Parking Lot Status", frame)
         if cv2.waitKey(5) & 0xFF == 27:  # ESC key to exit
