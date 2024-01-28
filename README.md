@@ -18,6 +18,7 @@ This project is designed to detect and track available parking spaces using vide
 - tkinter for Python (for GUI components)
 - Pillow for image processing
 - React Native environment (for front-end development)
+- yarn
 
 ## Installation
 1. **Install Python Dependencies**:
