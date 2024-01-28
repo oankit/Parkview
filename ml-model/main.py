@@ -75,11 +75,8 @@ class ParkingSpaceApp:
         if self.current_image is not None:
             image = cv2.cvtColor(self.current_image, cv2.COLOR_BGR2RGB)
             image = Image.fromarray(image)
-
-            # Resize image if it's too large
             if image.width > 800 or image.height > 600:
-                image = image.resize((800, 600), Image.ANTIALIAS)
-
+                image = image.resize((800, 600), Image.Resampling.LANCZOS)  # Updated here
             self.tk_image = ImageTk.PhotoImage(image)
             self.canvas.create_image(0, 0, anchor=tk.NW, image=self.tk_image)
             self.draw_parking_spaces()
@@ -98,16 +95,12 @@ class ParkingSpaceApp:
     def right_click(self, event):
         closest_space = None
         min_distance = float('inf')
-
-        # Find the closest box to the click position
         for i, pos in enumerate(self.parking_spaces):
             x, y = pos
             distance = ((x - event.x) ** 2 + (y - event.y) ** 2) ** 0.5
             if distance < min_distance:
                 min_distance = distance
                 closest_space = i
-
-        # Remove the closest box
         if closest_space is not None:
             self.history.append(list(self.parking_spaces))  # Save current state
             self.parking_spaces.pop(closest_space)
