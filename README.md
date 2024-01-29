@@ -55,5 +55,10 @@ This project is designed to detect and track available parking spaces using vide
 - Check camera permissions for live streaming from devices.
 
 ## [Links]
-[DevPost](https://devpost.com/software/parkview)
-[Demo](https://www.youtube.com/watch?v=i4-GDZVZWMw)
+-[DevPost](https://devpost.com/software/parkview)
+-[Demo](https://www.youtube.com/watch?v=i4-GDZVZWMw)
+
+## Media
+-![alt text](https://github.com/ammaarkhan/parkview/blob/main/ParkViewApp/detail%20screen.png)
+-![alt text](https://github.com/ammaarkhan/parkview/blob/main/ParkViewApp/home%20screen.png)
+-![alt text](https://github.com/ammaarkhan/parkview/blob/main/ParkViewApp/obect%20detection%20model.png)
