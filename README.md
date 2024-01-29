@@ -1,6 +1,5 @@
 
 # Parking Space Detection and Tracking
-
 ## Project Overview
 This project is designed to detect and track available parking spaces using video feeds. It utilizes Python with OpenCV for image processing and can connect to live video feeds or process recorded MP4 videos. The system integrates with React Native for the front end, providing a seamless user interface, and uses JSON to store parking positions. YOLO (You Only Look Once) can be optionally integrated for enhanced car detection.
 
@@ -54,8 +53,5 @@ This project is designed to detect and track available parking spaces using vide
 - Verify network connectivity for live video feeds.
 - Check camera permissions for live streaming from devices.
 
-## License
-[Your chosen license]
+## [DevPost]([https://link-url-here.org](https://devpost.com/software/parkview)
 
-## Contact
-[Your contact information]
