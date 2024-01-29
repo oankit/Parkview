@@ -54,4 +54,6 @@ This project is designed to detect and track available parking spaces using vide
 - Verify network connectivity for live video feeds.
 - Check camera permissions for live streaming from devices.
 
-## [DevPost](https://devpost.com/software/parkview)
+## [Links]
+[DevPost](https://devpost.com/software/parkview)
+[Demo](https://www.youtube.com/watch?v=i4-GDZVZWMw)
