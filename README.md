@@ -1,4 +1,10 @@
 
+## Media
+-![alt text](https://github.com/ammaarkhan/parkview/blob/main/ParkViewApp/details%20screen.jpg)
+-![alt text](https://github.com/ammaarkhan/parkview/blob/main/ParkViewApp/home%20screen.jpg)
+-![alt text](https://github.com/ammaarkhan/parkview/blob/main/ParkViewApp/object%20detection%20model.jpg)
+
+
 # Parking Space Detection and Tracking
 ![alt text](https://github.com/ammaarkhan/parkview/blob/main/ParkViewApp/parkview%20logo.png)
 ## Project Overview
@@ -57,8 +63,3 @@ This project is designed to detect and track available parking spaces using vide
 ## Links
 - [DevPost](https://devpost.com/software/parkview)
 - [Demo](https://www.youtube.com/watch?v=i4-GDZVZWMw)
-
-## Media
--![alt text](https://github.com/ammaarkhan/parkview/blob/main/ParkViewApp/details%20screen.jpg)
--![alt text](https://github.com/ammaarkhan/parkview/blob/main/ParkViewApp/home%20screen.jpg)
--![alt text](https://github.com/ammaarkhan/parkview/blob/main/ParkViewApp/object%20detection%20model.jpg)
